@@ -32,7 +32,7 @@ export default function CreateForm() {
       case "Long Text":
         return "long_text";
       case "Email":
-        return "short_text"; // Email stored as short_text
+        return "short_text"; 
       case "Number":
         return "short_text"; // Or use "number" if supported
       default:
@@ -78,17 +78,17 @@ export default function CreateForm() {
       console.log("📥 Response status:", res.status);
 
       if (res.ok) {
-        alert("✅ Form saved!");
+        alert("Form saved!");
         setFormTitle("");
         setFields([]);
       } else {
         const errorText = await res.text();
-        console.error("❌ Backend error:", errorText);
-        alert("❌ Failed to save form.");
+        console.error("Backend error:", errorText);
+        alert("Failed to save form.");
       }
     } catch (err) {
-      console.error("❌ Network error:", err);
-      alert("❌ Error saving form.");
+      console.error("Network error:", err);
+      alert("Error saving form.");
     }
   };
 

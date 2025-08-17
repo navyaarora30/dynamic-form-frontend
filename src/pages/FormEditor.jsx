@@ -21,9 +21,9 @@ const FormEditor = () => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      alert("✅ Form updated!");
+      alert("Form updated!");
     } catch (err) {
-      alert("❌ Error updating form: " + err.message);
+      alert("Error updating form: " + err.message);
     }
   };
 
@@ -38,7 +38,7 @@ const FormEditor = () => {
         onChange={(e) => setForm({ ...form, title: e.target.value })}
         style={{ marginBottom: "10px", width: "300px" }}
       />
-      <button onClick={handleUpdate}>💾 Save Changes</button>
+      <button onClick={handleUpdate}>Save Changes</button>
     </div>
   );
 };

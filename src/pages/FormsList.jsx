@@ -32,8 +32,8 @@ const FormsList = () => {
         {forms.map((form) => (
           <li key={form._id}>
             <strong>{form.title}</strong> — {form.owner}
-            <button onClick={() => navigate(`/edit/${form._id}`)}>✏️ Edit</button>
-            <button onClick={() => navigate(`/form/${form._id}`)}>📄 View</button>
+            <button onClick={() => navigate(`/edit/${form._id}`)}>Edit</button>
+            <button onClick={() => navigate(`/form/${form._id}`)}> View</button>
             <button onClick={() => handleDelete(form._id)}>🗑 Delete</button>
           </li>
         ))}

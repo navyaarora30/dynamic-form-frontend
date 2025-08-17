@@ -17,7 +17,7 @@ const Dashboard = () => {
         const data = await res.json();
         setForms(data);
       } catch (err) {
-        console.error("❌ Error fetching forms:", err);
+        console.error("Error fetching forms:", err);
       }
     };
 
@@ -61,7 +61,7 @@ const Dashboard = () => {
       showWhen: [],
     };
 
-    console.log("📤 Sending payload:", JSON.stringify(payload, null, 2));
+    console.log("Sending payload:", JSON.stringify(payload, null, 2));
 
     try {
       const res = await fetch("https://dynamic-form-backend-gumc.onrender.com/api/forms", {
@@ -71,26 +71,26 @@ const Dashboard = () => {
       });
 
       const data = await res.json();
-      console.log("📥 Response status:", res.status);
-      console.log("📦 Response body:", data);
+      console.log("Response status:", res.status);
+      console.log("Response body:", data);
 
       if (res.status === 201) {
-        alert("✅ Form saved and synced to Airtable!");
+        alert("Form saved and synced to Airtable!");
         setFormTitle("");
         setFields([]);
         setForms((prev) => [data.form, ...prev]);
       } else {
-        alert("❌ Save failed. See console.");
+        alert("Save failed. See console.");
       }
     } catch (err) {
-      console.error("❌ Network error:", err);
-      alert("❌ Error saving form.");
+      console.error("Network error:", err);
+      alert("Error saving form.");
     }
   };
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">🛠️ Create New Form</h2>
+      <h2 className="mb-4">Create New Form</h2>
 
       <div className="mb-3">
         <label className="form-label">Form Title</label>
@@ -143,14 +143,14 @@ const Dashboard = () => {
       ))}
 
       <button className="btn btn-secondary me-2" onClick={handleAddField}>
-        ➕ Add Field
+        Add Field
       </button>
       <button className="btn btn-primary" onClick={handleSaveForm}>
-        💾 Save Form
+        Save Form
       </button>
 
       <hr className="my-5" />
-      <h3>👀 Live Preview</h3>
+      <h3>Live Preview</h3>
       {fields.length === 0 ? (
         <p className="text-muted">No fields to preview yet.</p>
       ) : (
@@ -189,7 +189,7 @@ const Dashboard = () => {
       )}
 
       <hr className="my-5" />
-      <h3>📋 Your Saved Forms</h3>
+      <h3>Your Saved Forms📋</h3>
       {forms.length === 0 ? (
         <p className="text-muted">No forms saved yet.</p>
       ) : (
