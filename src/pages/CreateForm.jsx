@@ -66,7 +66,7 @@ export default function CreateForm() {
       }))
     };
 
-    console.log("📤 Sending payload:", JSON.stringify(payload, null, 2));
+    console.log("Sending payload:", JSON.stringify(payload, null, 2));
 
     try {
       const res = await fetch("https://dynamic-form-backend-gumc.onrender.com/api/forms", {
@@ -75,7 +75,7 @@ export default function CreateForm() {
         body: JSON.stringify(payload)
       });
 
-      console.log("📥 Response status:", res.status);
+      console.log("Response status:", res.status);
 
       if (res.ok) {
         alert("Form saved!");
