@@ -4,9 +4,13 @@ const Dashboard = () => {
   const [formTitle, setFormTitle] = useState("");
   const [fields, setFields] = useState([]);
   const [forms, setForms] = useState([]);
+  const [user, setUser] = useState(null);
 
-  // Fetch saved forms on load
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    console.log("👤 Stored user from localStorage:", storedUser);
+    setUser(storedUser);
+
     const fetchForms = async () => {
       try {
         const res = await fetch("https://dynamic-form-backend-gumc.onrender.com/api/forms");
@@ -16,6 +20,7 @@ const Dashboard = () => {
         console.error("❌ Error fetching forms:", err);
       }
     };
+
     fetchForms();
   }, []);
 
@@ -41,19 +46,19 @@ const Dashboard = () => {
 
     const enrichedFields = fields.map((field, index) => ({
       ...field,
-      key: `field_${index + 1}`
+      key: `field_${index + 1}`,
     }));
 
     const payload = {
       title: formTitle,
-      owner: "navya",
+      owner: user?.username || user?.email || "anonymous",
       fields: enrichedFields,
       airtable: {
         baseId: "appzeK1XXF3msG3aS",
-        tableName: "Submissions"
+        tableName: "Submissions",
       },
       showWhenOperator: "all",
-      showWhen: []
+      showWhen: [],
     };
 
     console.log("📤 Sending payload:", JSON.stringify(payload, null, 2));
@@ -62,7 +67,7 @@ const Dashboard = () => {
       const res = await fetch("https://dynamic-form-backend-gumc.onrender.com/api/forms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -70,10 +75,10 @@ const Dashboard = () => {
       console.log("📦 Response body:", data);
 
       if (res.status === 201) {
-        alert("✅ Form saved!");
+        alert("✅ Form saved and synced to Airtable!");
         setFormTitle("");
         setFields([]);
-        setForms(prev => [data.form, ...prev]);
+        setForms((prev) => [data.form, ...prev]);
       } else {
         alert("❌ Save failed. See console.");
       }
@@ -143,6 +148,45 @@ const Dashboard = () => {
       <button className="btn btn-primary" onClick={handleSaveForm}>
         💾 Save Form
       </button>
+
+      <hr className="my-5" />
+      <h3>👀 Live Preview</h3>
+      {fields.length === 0 ? (
+        <p className="text-muted">No fields to preview yet.</p>
+      ) : (
+        <form>
+          {fields.map((field, index) => (
+            <div key={index} className="mb-3">
+              <label className="form-label">
+                {field.label || `Untitled Field ${index + 1}`}
+                {field.required && <span className="text-danger ms-1">*</span>}
+              </label>
+
+              {field.type === "short_text" && (
+                <input type="text" className="form-control" disabled placeholder="Short text input" />
+              )}
+              {field.type === "long_text" && (
+                <textarea className="form-control" disabled placeholder="Long text input" />
+              )}
+              {field.type === "single_select" && (
+                <select className="form-select" disabled>
+                  <option>Option 1</option>
+                  <option>Option 2</option>
+                </select>
+              )}
+              {field.type === "multi_select" && (
+                <select className="form-select" multiple disabled>
+                  <option>Option A</option>
+                  <option>Option B</option>
+                </select>
+              )}
+              {field.type === "attachment" && (
+                <input type="file" className="form-control" disabled />
+              )}
+            </div>
+          ))}
+        </form>
+      )}
 
       <hr className="my-5" />
       <h3>📋 Your Saved Forms</h3>

@@ -24,14 +24,28 @@ const Login = () => {
       });
 
       const data = await res.json();
+      console.log("📦 Login response:", data);
+
       if (!res.ok) throw new Error(data.message);
 
-      // Optional: store token if needed
-      // localStorage.setItem("token", data.token);
+      // ✅ Store user if backend returns it
+      if (data.user && data.user.username) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        console.log("✅ User stored in localStorage:", data.user);
+      } else {
+        // 🛠️ TEMP fallback for testing
+        const fallbackUser = {
+          username: "josh",
+          email: "josh@yahoo.com"
+        };
+        localStorage.setItem("user", JSON.stringify(fallbackUser));
+        console.warn("⚠️ Backend did not return user. Using fallback:", fallbackUser);
+      }
 
       navigate("/dashboard");
     } catch (err) {
       alert("Login failed: " + err.message);
+      console.error("❌ Login error:", err);
     }
   };
 
